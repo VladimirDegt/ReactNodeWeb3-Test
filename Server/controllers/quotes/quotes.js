@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const path = require('path');
-const { setStatic } = require('../../utils/_utils');
+// const { setStatic } = require('../../utils/_utils'); // DISABLED FOR SECURITY REASONS
 const Quotes = require("../../model/schema/quotes.js");
 const User = require('../../model/schema/user')
 const Invoices = require("../../model/schema/invoices.js");
@@ -254,9 +254,9 @@ const view = async (req, res) => {
     }
 };
 
-const setStaticPath = (()=>{
-    setStatic(path.join(process.cwd(), '../Client/public'));
-})(); 
+// const setStaticPath = (()=>{
+//     setStatic(path.join(process.cwd(), '../Client/public'));
+// })(); // DISABLED FOR SECURITY REASONS 
 
 const convertToInvoice = async (req, res) => {
     try {

