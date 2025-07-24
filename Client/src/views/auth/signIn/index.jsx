@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-// Chakra imports
 import {
   Box,
   Button,
@@ -17,12 +16,10 @@ import {
   InputRightElement,
   Text,
   useColorModeValue,
+  VStack,
 } from "@chakra-ui/react";
 
-// Custom components
 import DefaultAuth from "layouts/auth/Default";
-// Assets
-
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { RiEyeCloseLine } from "react-icons/ri";
 import { postApi } from "services/api";
@@ -32,19 +29,20 @@ import Spinner from "components/spinner/Spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchImage } from "../../../redux/slices/imageSlice";
 import { setUser } from "../../../redux/slices/localSlice";
+import Web3Wallet from "components/Web3Wallet";
+import { useWeb3 } from "../../../contexts/Web3Context";
 
 function SignIn() {
-  // Chakra color mode
   const textColor = useColorModeValue("navy.700", "white");
   const textColorSecondary = "gray.400";
   const brandStars = useColorModeValue("brand.500", "brand.400");
   const [isLoding, setIsLoding] = React.useState(false);
   const [checkBox, setCheckBox] = React.useState(true);
+  const { walletAddress, isConnected } = useWeb3();
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Dispatch the fetchRoles action on component mount
     dispatch(fetchImage("?isActive=true"));
   }, [dispatch]);
 
@@ -75,6 +73,11 @@ function SignIn() {
   const navigate = useNavigate();
 
   const login = async () => {
+    if (!walletAddress) {
+      toast.error('Please connect wallet first');
+      return;
+    }
+
     try {
       setIsLoding(true);
       let response = await postApi("api/user/login", values, checkBox);
@@ -122,7 +125,7 @@ function SignIn() {
             fontWeight="400"
             fontSize="md"
           >
-            Enter your email and password to sign in!
+            Connect wallet and enter your credentials to sign in!
           </Text>
         </Box>
         <Flex
@@ -136,7 +139,12 @@ function SignIn() {
           me="auto"
           mb={{ base: "20px", md: "auto" }}
         >
-          <form onSubmit={handleSubmit}>
+          <VStack spacing={6}>
+            <Web3Wallet 
+              isRequired={true}
+            />
+            
+            <form onSubmit={handleSubmit} style={{ width: '100%' }}>
             <FormControl isInvalid={errors.username && touched.username}>
               <FormLabel
                 display="flex"
@@ -258,12 +266,13 @@ function SignIn() {
                 h="50"
                 type="submit"
                 mb="24px"
-                disabled={isLoding ? true : false}
+                disabled={isLoding || !isConnected}
               >
                 {isLoding ? <Spinner /> : "Sign In"}
               </Button>
             </FormControl>
           </form>
+          </VStack>
         </Flex>
       </Flex>
     </DefaultAuth>
