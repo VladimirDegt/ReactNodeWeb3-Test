@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Provider } from 'react-redux';
 import { store, persistor } from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
+import { Web3Provider } from './contexts/Web3Context';
 
 function App() {
 	const token = localStorage.getItem("token") || sessionStorage.getItem("token");
@@ -44,9 +45,11 @@ ReactDOM.render(
 			<ChakraProvider theme={theme}>
 				<React.StrictMode>
 					<ThemeEditorProvider>
-						<Router>
-							<App />
-						</Router>
+						<Web3Provider>
+							<Router>
+								<App />
+							</Router>
+						</Web3Provider>
 					</ThemeEditorProvider>
 				</React.StrictMode>
 			</ChakraProvider>

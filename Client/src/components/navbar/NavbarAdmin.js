@@ -8,6 +8,7 @@ import { AiOutlineMenuUnfold } from "react-icons/ai";
 import { AiOutlineMenuFold } from "react-icons/ai";
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchImage } from '../../redux/slices/imageSlice';
+import WalletInfo from '../WalletInfo';
 
 export default function AdminNavbar(props) {
 	const [scrolled, setScrolled] = useState(false);
@@ -175,16 +176,19 @@ export default function AdminNavbar(props) {
 					</Link>
 				</Box>
 				<Box ms='auto' w={{ sm: '100%', md: 'unset' }}>
-					<AdminNavbarLinks
-						setOpenSidebar={setOpenSidebar}
-						openSidebar={openSidebar}
-						onOpen={props.onOpen}
-						logoText={props.logoText}
-						secondary={props.secondary}
-						fixed={props.fixed}
-						scrolled={scrolled}
-						routes={routes}
-					/>
+					<Flex align="center" gap={4}>
+						<WalletInfo />
+						<AdminNavbarLinks
+							setOpenSidebar={setOpenSidebar}
+							openSidebar={openSidebar}
+							onOpen={props.onOpen}
+							logoText={props.logoText}
+							secondary={props.secondary}
+							fixed={props.fixed}
+							scrolled={scrolled}
+							routes={routes}
+						/>
+					</Flex>
 				</Box>
 			</Flex>
 			{secondary ? <Text color='white'>{message}</Text> : null}
